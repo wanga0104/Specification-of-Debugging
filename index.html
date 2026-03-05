@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
@@ -15,12 +15,43 @@
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 30px;
+        }
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .content-section h2 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .content-section h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .content-section p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .content-section ul {
+            margin-bottom: 15px;
+        }
+        .content-section li {
+            margin-bottom: 8px;
         }
         .file-list {
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             padding: 20px;
+            margin-bottom: 30px;
         }
         .file-item {
             margin-bottom: 15px;
@@ -56,7 +87,99 @@
 </head>
 <body>
     <h1>调试规定文件下载</h1>
+    
+    <div class="content-section">
+        <h2>调试规定</h2>
+        
+        <h3>一、调试准备阶段</h3>
+        <ol>
+            <li>终端厂家（提前一周）导出设备测试证书发至配网部，由配网部发至中国电科院完成签发认证。</li>
+            <li>终端厂家提供终端相关信息（正式证书、终端检测报告、sim卡IP）至配自主站，由配自调试人员建立通道。</li>
+            <li>配自主站调试人员提供终端通道号和终端点表标准模版，终端调试人员根据点表模版进行本地配置。</li>
+        </ol>
+        
+        <p><strong>注意事项：</strong></p>
+        <ol>
+            <li>主站调试人员需要检查终端正式证书和终端检测报告，通过证书编号在云主站应接必接中找到对应的记录，同时终端必须具备完整的检测报告方可接入配自主站。</li>
+            <li>检查sim卡是否为正确IP。</li>
+            <li>确认终端可以满足104规约（默认均使用国网安全防护104规约通信）。</li>
+        </ol>
+        
+        <h3>二、调试阶段</h3>
+        <h4>1．终端报文流程</h4>
+        <p>终端通电后可以快速上线，终端双向认证、总召、对时整套流程正常，确保终端报文通信正常。环网柜设备应保证环网柜门关闭时通讯正常，柱上开关应保证信号天线安装正确.</p>
+        
+        <h4>终端四遥验收</h4>
+        <ul>
+            <li><strong>遥信</strong>：遥信信号要求与现场一致，现场动作或者复位，3秒内能上送至配自主站。</li>
+            <li><strong>遥测</strong>：线电压默认为10kV；A、B、C、I0相电流与现场继保仪加量值保持一致（ABC三相电流5A，零序电流1A），单位为A；功率因数角45度（cosθ=0.707）功率默认为A、B、C相电流*线电压*1.732（P=7374kW，变比600/5），单位为kW。电流死区参考0.005，电流零漂参考0.002，如果造成遥测频发，应根据实际情况修改。</li>
+            <li><strong>遥控</strong>：就地位置，遥控不允许执行（预置指令报错）；压板退出情况下，遥控执行报错（无法控制开关）；现场在远方和压板投入情况下，才可以进行遥控操作。电池活化应可以远程遥控。</li>
+            <li><strong>遥调</strong>：终端需具备定值总召功能，具备远程下装及修改定值功能；核对相关定值信息是否与现场一致（三相CT变比、零序CT变比等）；核对零漂/死区的控制方式，确保零漂/死区修改生效。</li>
+        </ul>
+        
+        <h4>2．终端保护测试</h4>
+        <ol>
+            <li>远程下装过流/零流I、II、III段保护定值和动作时限，确认终端已经投入过流/零流I、II、III段保护告警、跳闸功能，被试开关在合闸状态。</li>
+            <li>现场通过继保仪加量（1.05倍设定定值），终端应正确跳闸，主站观察终端保护动作及复位信号、观察开关跳闸信号、观察重合闸动作信号，各项保护信号均要正常上送。</li>
+            <li>查终端上送的故障事件信号，观察该功能是否正常，报文中的故障电流需与现场加量值保持一致。</li>
+            <li>现场通过继保仪加量（0.95倍设定定值），终端应可靠不动作。</li>
+        </ol>
+        
+        <h4>3．录波文件召测</h4>
+        <p>远程召测终端生成的录波文件，要求60s内能召测完成（cfg/dat 文件）。</p>
+        
+        <p><strong>注意事项：</strong></p>
+        <ol>
+            <li>遥信报文除cos外，还需监测对应的soe报文上送是否正常。</li>
+            <li>终端需要正确应答主站对时指令，确保终端时间与主站保持一致。</li>
+            <li>调试结束后，要求厂家对终端所有保护进行退出，配自调试人员进行召测检查。</li>
+            <li>配自调试人员如实填写调试记录，记录各项调试内容。调试不合格的终端反馈至运维单位。</li>
+            <li>调试结束后应要求现场所有开关保护退出。</li>
+            <li>大电流遮断闭锁保护按开关最大遮断容量核定并投入。</li>
+            <li>励磁涌流保护可根据现场需要选择性投入。</li>
+            <li>主站点表里“过流一段、过流二段、过流三段、零序过流一段、零序过流二段”并发事故总信号。交流失电不要事故总，终端装置异常不要事故总。退出任何不属于以上遥信的保护，如“退出低电压告警”、“退过电压告警”等等内部乱七八糟的告警。</li>
+            <li>零序电流电压：要求通过零序CT采集，不能通过三相电流合成。</li>
+            <li>蓄电池自动活化周期（90日）：<br>
+                科大智能 8:00<br>
+                珠海博威 9:00<br>
+                东方电子 10:00<br>
+                北京三清11:00<br>
+                保定冀能12:00<br>
+                珠海许继13:00<br>
+                南瑞继保14:00<br>
+                北京清畅15:00<br>
+                金智科技16:00<br>
+                山东电工17:00<br>
+                平高电气18:00<br>
+                合肥亿莱克19:00<br>
+                国电南自20:00<br>
+                湖北网安21:00<br>
+                上海思源22:00<br>
+                石家庄科林23:00<br>
+                上海致达0:30<br>
+                其他厂家：1:30
+            </li>
+            <li>小电流接地告警未正确使用零序功率方向法，我们要求“区间内接地故障告警”，继保仪测试时，加u0180°，加3i0 0°。如果你加3i0（180°），加u0(0°)，那么你肯定是区内接地和区外接地一起报，那就是错误的。只有u0超前3i0 180°才报接地故障。</li>
+        </ol>
+        
+        <h4>调试完成设置默认参数:</h4>
+        <ul>
+            <li>电流死区参考0.005</li>
+            <li>电流零漂参考0.002</li>
+            <li>功率零票0.001</li>
+            <li>零序电压越限启动录波:投(1)</li>
+            <li>零序电压越限启动录波定值:FTU:零序启动电压二次值15V; DTU:零序启动电压二次值1V;</li>
+            <li>零序电流越限启动录波:退(0)</li>
+            <li>小电流接地出口:退(0)</li>
+            <li>小电流接地告警:投(1);</li>
+            <li>小电流接地告警时间:5s;</li>
+            <li>事故总判小电流接地告警投退:退(0);</li>
+            <li>遮断闭锁保护: 退(0)</li>
+        </ul>
+    </div>
+    
     <div class="file-list">
+        <h2>文件下载</h2>
         <div class="file-item">
             <div class="file-name">台账模板.xlsx</div>
             <a href="台账模板.xlsx" class="download-link" download>下载文件</a>
@@ -77,7 +200,12 @@
             <div class="file-name">附件1：铜陵四遥点表20250513版本.xlsx</div>
             <a href="附件1：铜陵四遥点表20250513版本.xlsx" class="download-link" download>下载文件</a>
         </div>
+        <div class="file-item">
+            <div class="file-name">内容.txt</div>
+            <a href="内容.txt" class="download-link" download>下载文件</a>
+        </div>
     </div>
+    
     <div class="footer">
         <p>© 2026 调试规定文件下载</p>
     </div>
