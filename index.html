@@ -92,6 +92,26 @@
             color: #2c3e50;
         }
         
+        /* 图片样式 */
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        .image-caption {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
         /* 文件下载部分 */
         .file-list {
             background-color: white;
@@ -305,8 +325,16 @@
         
         <h3>104规约故障事件</h3>
         <p>104规约故障事件中：传送原因2个字节，公共地址2个字节，信息体地址2个字节。</p>
-        <p><strong>问题表现：</strong>第一个图片无法被解析出（展示3.png）。</p>
-        <p><strong>解决方案：</strong>手动删除了报文8d后面的00就可以正常解析（展示2.png）。</p>
+        <p><strong>问题表现：</strong>第一个图片无法被解析出。</p>
+        <div class="image-container">
+            <img src="3.png" alt="无法解析的报文示例">
+            <div class="image-caption">图1：无法解析的报文示例（3.png）</div>
+        </div>
+        <p><strong>解决方案：</strong>手动删除了报文8d后面的00就可以正常解析。</p>
+        <div class="image-container">
+            <img src="2.png" alt="正常解析的报文示例">
+            <div class="image-caption">图2：正常解析的报文示例（2.png）</div>
+        </div>
     </div>
     
     <div class="file-list">
